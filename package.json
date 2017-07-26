@@ -1,0 +1,36 @@
+{
+  "name": "nti-lib-store-connector",
+  "version": "0.1.0-alpha",
+  "author": "nextthought",
+  "description": "A store connector",
+  "license": "UNLICENSED",
+  "main": "./lib/cjs-index.js",
+  "module": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "nti-cmp-scripts test",
+    "start": "nti-cmp-scripts start",
+    "prepack": "nti-cmp-scripts build",
+    "build": "nti-cmp-scripts build",
+    "clean": "nti-cmp-scripts clean",
+    "check": "nti-cmp-scripts check",
+    "release": "nti-cmp-scripts release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NextThought/nti.lib.store.connector.git"
+  },
+  "keywords": [
+    "react",
+    "component"
+  ],
+  "dependencies": {
+    "react": "^15.5.0",
+    "prop-types": "^15.5.0"
+  },
+  "devDependencies": {
+    "nti-cmp-scripts": "^1.0.1"
+  }
+}
