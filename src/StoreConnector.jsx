@@ -41,7 +41,11 @@ export default class StoreConnector extends React.Component {
 	}
 
 	static propTypes = {
-		_store: PropTypes.object.isRequired,
+		_store: PropTypes.shape({
+			get: PropTypes.func.isRequired,
+			addChangeListener: PropTypes.func.isRequired,
+			removeChangeListener: PropTypes.func.isRequired
+		}).isRequired,
 		_component: PropTypes.any.isRequired,
 		_propMap: PropTypes.object,
 		_onMount: PropTypes.func,
