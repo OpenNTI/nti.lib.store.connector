@@ -26,9 +26,9 @@ export default class StoreConnector extends React.Component {
 		);
 
 
-		const target = component.WrappedComponent || component || 'Component';
+		const target = component.WrappedComponent || component;
 
-		cmp.displayName = `StoreConnector(${target.displayName || target.name})`;
+		cmp.displayName = `StoreConnector(${target.displayName || target.name || 'Component'})`;
 		cmp.WrappedComponent = target;
 
 		for (let key of Object.keys(target)) {
