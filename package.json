@@ -33,6 +33,5 @@
   },
   "devDependencies": {
     "nti-cmp-scripts": "^1.0.32"
-  },
-  "testEnvironment": "jsdom"
+  }
 }
