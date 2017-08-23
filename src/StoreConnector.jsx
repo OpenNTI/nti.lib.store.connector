@@ -1,16 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const REACT_KEYS = {
-	childContextTypes: true,
-	contextTypes: true,
-	defaultProps: true,
-	displayName: true,
-	getDefaultProps: true,
-	mixins: true,
-	propTypes: true,
-	type: true,
-};
+import {HOC} from 'nti-commons';
 
 export default class StoreConnector extends React.Component {
 
@@ -26,22 +16,7 @@ export default class StoreConnector extends React.Component {
 		);
 
 
-		const target = component.WrappedComponent || component;
-
-		cmp.displayName = `StoreConnector(${target.displayName || target.name || 'Component'})`;
-		cmp.WrappedComponent = target;
-
-		for (let key of Object.keys(target)) {
-			if (key in REACT_KEYS || cmp[key] != null) {
-				continue;
-			}
-
-			Object.defineProperty(cmp, key, {
-				get: () => target[key]
-			});
-		}
-
-		return cmp;
+		return HOC.hoistStatics(cmp, component, 'StoreConnector');
 	}
 
 	static propTypes = {

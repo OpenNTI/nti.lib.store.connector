@@ -28,6 +28,7 @@
     "component"
   ],
   "dependencies": {
+    "nti-commons": "^2.8.0",
     "react": "^15.5.0",
     "prop-types": "^15.5.0"
   },
