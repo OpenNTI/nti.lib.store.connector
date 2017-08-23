@@ -19,6 +19,7 @@ export default class StoreConnector extends React.Component {
 		return HOC.hoistStatics(cmp, component, 'StoreConnector');
 	}
 
+
 	static propTypes = {
 		_store: PropTypes.shape({
 			get: PropTypes.func.isRequired,
@@ -30,10 +31,12 @@ export default class StoreConnector extends React.Component {
 		_onMount: PropTypes.func,
 	}
 
+
 	componentWillMount () {
 		const {_store: store} = this.props;
 		this.subscribe(store);
 	}
+
 
 	componentDidMount () {
 		const {_onMount: callback} = this.props;
@@ -42,6 +45,7 @@ export default class StoreConnector extends React.Component {
 		}
 	}
 
+
 	componentWillReceiveProps (nextProps) {
 		const {_store: B} = nextProps;
 		const {_store: A} = this.props;
@@ -49,6 +53,7 @@ export default class StoreConnector extends React.Component {
 			this.subscribe(B);
 		}
 	}
+
 
 	componentWillUnmount () {
 		this.unmounted = true;
@@ -104,6 +109,7 @@ export default class StoreConnector extends React.Component {
 
 		return props;
 	}
+
 
 	render () {
 		const {_component: Component} = this.props;
