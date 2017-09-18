@@ -29,7 +29,7 @@ export default class StoreConnector extends React.Component {
 		_component: PropTypes.any,
 		_propMap: PropTypes.object,
 		_onMount: PropTypes.func,
-		children: PropTypes.node
+		children: PropTypes.element
 	}
 
 
