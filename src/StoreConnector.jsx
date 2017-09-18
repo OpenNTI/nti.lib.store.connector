@@ -26,9 +26,10 @@ export default class StoreConnector extends React.Component {
 			addChangeListener: PropTypes.func.isRequired,
 			removeChangeListener: PropTypes.func.isRequired
 		}).isRequired,
-		_component: PropTypes.any.isRequired,
+		_component: PropTypes.any,
 		_propMap: PropTypes.object,
 		_onMount: PropTypes.func,
+		children: PropTypes.node
 	}
 
 
@@ -84,7 +85,11 @@ export default class StoreConnector extends React.Component {
 			return;
 		}
 
-		if (_propMap.hasOwnProperty(type)) {
+		if (!type && _propMap) {
+			throw new Error ('No type on change.');
+		}
+
+		if (!_propMap || _propMap.hasOwnProperty(type)) {
 			this.forceUpdate();
 		}
 	}
@@ -112,11 +117,17 @@ export default class StoreConnector extends React.Component {
 
 
 	render () {
-		const {_component: Component} = this.props;
+		const {_component: Component, children} = this.props;
 		const props = this.getPropsFromMap();
 
-		return (
-			<Component {...props}/>
-		);
+		if (Component) {
+			return (
+				<Component {...props}/>
+			);
+		}
+
+		const child = React.Children.only(children);
+
+		return React.cloneElement(child, props);
 	}
 }
