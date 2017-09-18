@@ -4,6 +4,20 @@ import {HOC} from 'nti-commons';
 
 export default class StoreConnector extends React.Component {
 
+	/**
+	 * Used to compose a Component Class. This returns a new Component Type.
+	 *
+	 * @param  {Object} store The store to connect to.
+	 * @param  {Class} component The component to compose & wire to store updates.
+	 * @param  {Object} propMap mapping of key from store to a a prop name.
+	 *                          Ex:
+	 *                          {
+	 *                              'AppUser': 'user',
+	 *                              'AppName': 'title',
+	 *                          }
+	 * @param  {Function} onMount A callback after the component mounts. Handy to dynamically build stores or load data.
+	 * @return {Function} A Composed Component
+	 */
 	static connect (store, component, propMap, onMount) {
 		const cmp = (props) => (
 			<StoreConnector
@@ -21,14 +35,45 @@ export default class StoreConnector extends React.Component {
 
 
 	static propTypes = {
+		/*
+		 * A store should implement at minimum three methods:
+		 *
+		 *     get(string): any
+		 *         Used to retrieve a prop-mapping value from the store.
+		 *
+		 *     addChangeListener(function): void
+		 *         Used to subscribe to updates.
+		 *
+		 *     removeChangeListener(function): void
+		 *         Used to unsubscribe from updates.
+		 */
 		_store: PropTypes.shape({
 			get: PropTypes.func.isRequired,
 			addChangeListener: PropTypes.func.isRequired,
 			removeChangeListener: PropTypes.func.isRequired
 		}).isRequired,
+
+		/*
+		 * Optional/Required: This, or a single child must be specified... not both.
+		 * A Component to render with added props. May be any valid component...
+		 */
 		_component: PropTypes.any,
+
+		/*
+		 * A mapping of Store-Key to propName.
+		 * Keys present will be retrieved form the store and assigned to a prop passed to our Component/child.
+		 */
 		_propMap: PropTypes.object,
+
+		/*
+		 * A function to call when this component mounts. Usefull for triggering loads/constructing stores.
+		 */
 		_onMount: PropTypes.func,
+
+		/*
+		 * Optional/Required: This, or _component must be specified... not both.
+		 * A single child... will clone and add props.
+		 */
 		children: PropTypes.element
 	}
 
@@ -96,11 +141,17 @@ export default class StoreConnector extends React.Component {
 
 
 	getPropsFromMap () {
-		const {_store, _propMap = {}, ...others} = this.props;
+		const {_component, _store, _propMap = {}, ...others} = this.props;
 		const keys = Object.keys(_propMap);
 
 		const props = {...others};
 		for(let privateKey of Object.keys(StoreConnector.propTypes)) {
+
+			//Don't consider 'children' a private prop if we are in "_component" mode.
+			if (privateKey === 'children' && _component) {
+				continue;
+			}
+
 			delete props[privateKey];
 		}
 
@@ -117,17 +168,11 @@ export default class StoreConnector extends React.Component {
 
 
 	render () {
-		const {_component: Component, children} = this.props;
+		const {_component, children} = this.props;
 		const props = this.getPropsFromMap();
 
-		if (Component) {
-			return (
-				<Component {...props}/>
-			);
-		}
-
-		const child = React.Children.only(children);
-
-		return React.cloneElement(child, props);
+		return _component
+			? React.createElement(_component, props)
+			: React.cloneElement(React.Children.only(children), props);
 	}
 }
