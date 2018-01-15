@@ -19,16 +19,19 @@ export default class StoreConnector extends React.Component {
 	 * @return {Function} A Composed Component
 	 */
 	static connect (store, component, propMap, onMount) {
-		const cmp = (props) => (
-			<StoreConnector
-				{...props}
-				_store={store}
-				_propMap={propMap}
-				_component={component}
-				_onMount={onMount}
-			/>
-		);
-
+		class cmp extends React.Component {
+			render () {
+				return (
+					<StoreConnector
+						{...this.props}
+						_store={store}
+						_propMap={propMap}
+						_component={component}
+						_onMount={onMount}
+					/>
+				);
+			}
+		}
 
 		return HOC.hoistStatics(cmp, component, 'StoreConnector');
 	}
