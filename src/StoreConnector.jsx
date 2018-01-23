@@ -160,12 +160,10 @@ export default class StoreConnector extends React.Component {
 
 		for (let key of keys) {
 			if (typeof _propMap[key] === 'string') {
-				const storeValue = _store[key];
+				const storeValue = _store.get(key);
 
 				if(typeof storeValue === 'function') {
-					props[_propMap[key]] = (...args) => {
-						return _store[key](...args);
-					};
+					props[_propMap[key]] = storeValue.bind(_store);
 				}
 				else {
 					props[_propMap[key]] = storeValue;
