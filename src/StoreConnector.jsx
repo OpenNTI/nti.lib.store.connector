@@ -26,9 +26,10 @@ export default class StoreConnector extends React.Component {
 	 *                              'AppName': 'title',
 	 *                          }
 	 * @param  {Function} onMount A callback after the component mounts. Handy to dynamically build stores or load data.
+	 * @param  {Function} onUnmount A callback before the component unmounts.
 	 * @return {Function} A Composed Component
 	 */
-	static connect (store, component, propMap, onMount) {
+	static connect (store, component, propMap, onMount, onUnmount) {
 		class cmp extends React.Component {
 			render () {
 				return (
@@ -38,6 +39,7 @@ export default class StoreConnector extends React.Component {
 						_propMap={propMap}
 						_component={component}
 						_onMount={onMount}
+						_onUnmount={onUnmount}
 					/>
 				);
 			}
@@ -79,9 +81,14 @@ export default class StoreConnector extends React.Component {
 		_propMap: PropTypes.object,
 
 		/*
-		 * A function to call when this component mounts. Usefull for triggering loads/constructing stores.
+		 * A function to call when this component mounts. Useful for triggering loads/constructing stores.
 		 */
 		_onMount: PropTypes.func,
+
+		/*
+		 * A function to call when this component unmounts.
+		 */
+		_onUnmount: PropTypes.func,
 
 		/*
 		 * Optional/Required: This, or _component must be specified... not both.
@@ -115,9 +122,15 @@ export default class StoreConnector extends React.Component {
 
 
 	componentWillUnmount () {
+		const {_onUnmount: callback} = this.props;
 		this.unmounted = true;
+
 		if (this.unsubscribe) {
 			this.unsubscribe();
+		}
+
+		if (callback) {
+			callback();
 		}
 	}
 
