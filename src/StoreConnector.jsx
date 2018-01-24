@@ -2,6 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {HOC} from 'nti-commons';
 
+const BOUND_MAP = new WeakMap();
+
+function getBoundFunction (fn, scope) {
+	const bound = BOUND_MAP.get(fn) || fn.bind(scope);
+
+	BOUND_MAP.set(fn, bound);
+
+	return bound;
+}
+
 export default class StoreConnector extends React.Component {
 
 	/**
@@ -162,8 +172,8 @@ export default class StoreConnector extends React.Component {
 			if (typeof _propMap[key] === 'string') {
 				const storeValue = _store.get(key);
 
-				if(typeof storeValue === 'function') {
-					props[_propMap[key]] = storeValue.bind(_store);
+				if (typeof storeValue === 'function') {
+					props[_propMap[key]] = getBoundFunction(storeValue, _store);
 				}
 				else {
 					props[_propMap[key]] = storeValue;
