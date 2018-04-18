@@ -1,5 +1,5 @@
 {
-  "name": "nti-lib-store-connector",
+  "name": "@nti/lib-store-connector",
   "version": "0.8.0-alpha",
   "author": "nextthought",
   "description": "A store connector",
@@ -28,7 +28,7 @@
     "component"
   ],
   "dependencies": {
-    "nti-commons": "^2.8.0"
+    "@nti/lib-commons": "^2.8.0"
   },
   "peerDependencies": {
     "react": "*",
