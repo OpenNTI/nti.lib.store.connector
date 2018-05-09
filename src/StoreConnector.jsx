@@ -32,7 +32,7 @@ export default class StoreConnector extends React.Component {
 	static connect (store, component, propMap, onMount, onUnmount) {
 		const cmp = React.forwardRef((props, ref) => (
 			<StoreConnector
-				{...this.props}
+				{...props}
 				_forwardedRef={ref}
 				_store={store}
 				_propMap={propMap}
