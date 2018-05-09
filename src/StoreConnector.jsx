@@ -30,20 +30,17 @@ export default class StoreConnector extends React.Component {
 	 * @return {Function} A Composed Component
 	 */
 	static connect (store, component, propMap, onMount, onUnmount) {
-		class cmp extends React.Component {
-			render () {
-				return (
-					<StoreConnector
-						{...this.props}
-						_store={store}
-						_propMap={propMap}
-						_component={component}
-						_onMount={onMount}
-						_onUnmount={onUnmount}
-					/>
-				);
-			}
-		}
+		const cmp = React.forwardRef((props, ref) => (
+			<StoreConnector
+				{...this.props}
+				_forwardedRef={ref}
+				_store={store}
+				_propMap={propMap}
+				_component={component}
+				_onMount={onMount}
+				_onUnmount={onUnmount}
+			/>
+		));
 
 		return HOC.hoistStatics(cmp, component, 'StoreConnector');
 	}
@@ -94,7 +91,9 @@ export default class StoreConnector extends React.Component {
 		 * Optional/Required: This, or _component must be specified... not both.
 		 * A single child... will clone and add props.
 		 */
-		children: PropTypes.element
+		children: PropTypes.element,
+
+		_forwardedRef: PropTypes.any
 	}
 
 
@@ -167,10 +166,10 @@ export default class StoreConnector extends React.Component {
 
 
 	getPropsFromMap () {
-		const {_component, _store, _propMap = {}, ...others} = this.props;
+		const {_component, _forwardedRef: ref, _store, _propMap = {}, ...others} = this.props;
 		const keys = Object.keys(_propMap);
 
-		const props = {...others};
+		const props = {...others, ref};
 		for(let privateKey of Object.keys(StoreConnector.propTypes)) {
 
 			//Don't consider 'children' a private prop if we are in "_component" mode.
