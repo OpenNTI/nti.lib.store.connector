@@ -5,11 +5,17 @@ import {HOC} from '@nti/lib-commons';
 const BOUND_MAP = new WeakMap();
 
 function getBoundFunction (fn, scope) {
-	const bound = BOUND_MAP.get(fn) || fn.bind(scope);
+	if (!BOUND_MAP.has(scope)) {
+		BOUND_MAP.set(scope, new WeakMap());
+	}
 
-	BOUND_MAP.set(fn, bound);
+	const cache = BOUND_MAP.get(scope)
 
-	return bound;
+	if (!cache.has(fn) {
+		cache.set(fn, fn.bind(scope));
+	}
+
+	return cache.get(fn);
 }
 
 export default class StoreConnector extends React.Component {
