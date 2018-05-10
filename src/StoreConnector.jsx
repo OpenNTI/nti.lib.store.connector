@@ -11,7 +11,7 @@ function getBoundFunction (fn, scope) {
 
 	const cache = BOUND_MAP.get(scope)
 
-	if (!cache.has(fn) {
+	if (!cache.has(fn)) {
 		cache.set(fn, fn.bind(scope));
 	}
 
