@@ -9,7 +9,7 @@ function getBoundFunction (fn, scope) {
 		BOUND_MAP.set(scope, new WeakMap());
 	}
 
-	const cache = BOUND_MAP.get(scope)
+	const cache = BOUND_MAP.get(scope);
 
 	if (!cache.has(fn)) {
 		cache.set(fn, fn.bind(scope));
