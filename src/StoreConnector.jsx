@@ -161,11 +161,18 @@ export default class StoreConnector extends React.Component {
 			return;
 		}
 
+
 		if (!type && _propMap) {
 			throw new Error ('No type on change.');
 		}
 
-		if (!_propMap || _propMap.hasOwnProperty(type)) {
+		if (type && !Array.isArray(type)) {
+			type = [type];
+		}
+
+		const shouldUpdate = !_propMap || type.some(prop => _propMap.hasOwnProperty(prop));
+
+		if (shouldUpdate) {
 			this.forceUpdate();
 		}
 	}
