@@ -1,5 +1,0 @@
-{
-	"presets":[
-		"./node_modules/@nti/cmp-scripts/config/babelrc.js"
-	]
-}

@@ -4,10 +4,11 @@
   "author": "nextthought",
   "description": "A store connector",
   "license": "UNLICENSED",
-  "main": "lib/cjs-index.js",
-  "module": "lib/index.js",
+  "main": "lib/index.js",
+  "module": "src/index.js",
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "scripts": {
     "test": "cmp-scripts test",
@@ -38,7 +39,7 @@
     "prop-types": "*"
   },
   "devDependencies": {
-    "@nti/cmp-scripts": "^1.17.16",
+    "@nti/cmp-scripts": "^2.0.0",
     "prop-types": "^15.5.0",
     "react": "^16.2.0"
   }
