@@ -36,6 +36,7 @@ export default class StoreConnector extends React.Component {
 	 * @return {Function} A Composed Component
 	 */
 	static connect (store, component, propMap, onMount, onUnmount) {
+		// eslint-disable-next-line react/display-name
 		const cmp = React.forwardRef((props, ref) => (
 			<StoreConnector
 				{...props}
@@ -170,7 +171,7 @@ export default class StoreConnector extends React.Component {
 			type = [type];
 		}
 
-		const shouldUpdate = !_propMap || type.some(prop => _propMap.hasOwnProperty(prop));
+		const shouldUpdate = !_propMap || type.some(prop => Object.prototype.hasOwnProperty.call(_propMap, prop));
 
 		if (shouldUpdate) {
 			this.forceUpdate();
