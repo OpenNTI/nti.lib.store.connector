@@ -1,1 +1,1 @@
-export default from './StoreConnector';
+export { default as default } from './StoreConnector';
