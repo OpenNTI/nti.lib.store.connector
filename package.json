@@ -1,6 +1,6 @@
 {
   "name": "@nti/lib-store-connector",
-  "version": "0.14.0",
+  "version": "0.15.0-alpha",
   "author": "nextthought",
   "description": "A store connector",
   "license": "UNLICENSED",
