@@ -38,15 +38,15 @@ export default class StoreConnector extends React.Component {
 	static connect (store, component, propMap, onMount, onUnmount) {
 		// eslint-disable-next-line react/display-name
 		const cmp = React.forwardRef((props, ref) => (
-			<StoreConnector
-				{...props}
-				_forwardedRef={ref}
-				_store={store}
-				_propMap={propMap}
-				_component={component}
-				_onMount={onMount}
-				_onUnmount={onUnmount}
-			/>
+			React.createElement(StoreConnector, {
+				...props,
+				_forwardedRef: ref,
+				_store: store,
+				_propMap: propMap,
+				_component: component,
+				_onMount: onMount,
+				_onUnmount: onUnmount,
+			})
 		));
 
 		return HOC.hoistStatics(cmp, component, 'StoreConnector');

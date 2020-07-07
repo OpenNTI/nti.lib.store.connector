@@ -13,12 +13,9 @@
   "scripts": {
     "test": "cmp-scripts test",
     "start": "cmp-scripts start",
-    "prepack": "cmp-scripts build",
-    "build": "cmp-scripts build",
     "clean": "cmp-scripts clean",
     "check": "cmp-scripts check",
-    "release": "cmp-scripts release",
-    "install-snapshots": "cmp-scripts install-snapshots"
+    "release": "cmp-scripts release"
   },
   "repository": {
     "type": "git",
@@ -32,7 +29,7 @@
     "component"
   ],
   "dependencies": {
-    "@nti/lib-commons": "^2.8.0"
+    "@nti/lib-commons": "NextThought/nti.lib.commons"
   },
   "peerDependencies": {
     "react": "*",
