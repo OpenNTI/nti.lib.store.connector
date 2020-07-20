@@ -47,6 +47,7 @@ jobs:
           npm config set progress false
           npm config set '@nti:registry' "$NPM_REGISTRY"
           npm config set "${NPM_REGISTRY/https:/}/:_authToken" "$NPM_TOKEN"
+          git config --global url."git@github.com:".insteadOf "https://github.com/"
 
       - uses: actions/cache@v2
         with:
