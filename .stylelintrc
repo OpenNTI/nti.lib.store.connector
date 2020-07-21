@@ -1,3 +1,3 @@
 {
-	"extends": "@nti/codestyle-jsx/stylelint"
+	"extends": "@nti/stylelint-config-standard"
 }
