@@ -24,6 +24,10 @@ jobs:
   Verify:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.5.0
+        with:
+          access_token: ${{ github.token }}
 
       - name: install SSH key
         uses: webfactory/ssh-agent@v0.4.0
@@ -66,7 +70,7 @@ jobs:
         run: npm run check --if-present
 
       - name: notify of failure
-        if: failure()
+        if: ${{ failure() && github.ref == 'refs/heads/master' }}
         env:
           LINK: ${{ format('<https://github.com/{0}/actions|{0} failed>', github.repository) }}
         run: |
