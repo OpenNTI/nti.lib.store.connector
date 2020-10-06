@@ -70,7 +70,7 @@ jobs:
         run: npm run check --if-present
 
       - name: notify of failure
-        if: ${{ failure() && github.ref == 'refs/heads/master' }}
+        if: ${{ failure() && github.event_name != 'pull_request' }}
         env:
           LINK: ${{ format('<https://github.com/{0}/actions|{0} failed>', github.repository) }}
         run: |
