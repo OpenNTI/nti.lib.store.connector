@@ -104,8 +104,9 @@ export default class StoreConnector extends React.Component {
 	}
 
 
-	componentWillMount () {
-		const {_store: store} = this.props;
+	constructor (props) {
+		super(props);
+		const {_store: store} = props;
 		this.subscribe(store);
 	}
 
@@ -118,9 +119,9 @@ export default class StoreConnector extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {_store: B} = nextProps;
-		const {_store: A} = this.props;
+	componentDidUpdate (prevProps) {
+		const {_store: A} = prevProps;
+		const {_store: B} = this.props;
 		if (A !== B) {
 			this.subscribe(B);
 		}
