@@ -4,14 +4,14 @@ on:
   schedule:
     # every monday morning at 7:00am (central)
     # https://crontab.guru/#0_13_*_*_1
-    - cron:  '0 13 * * 1'
+    - cron: "0 13 * * 1"
 
   push:
     branches:
       - master
-      - 'maint-*'
+      - "maint-*"
     tags:
-      - 'v[0-9]+*'
+      - "v[0-9]+*"
 
   pull_request:
     branches:
@@ -61,7 +61,9 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: install dependencies
-        run: npm install
+        run: |
+          (test ! -f package-lock.json && npm i) || echo 'Lock found, skipping npm i'
+          (test -f package-lock.json && npm ci) || echo 'No lock, skipping npm ci'
 
       - name: test
         run: npm test
