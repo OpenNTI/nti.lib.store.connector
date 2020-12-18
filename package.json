@@ -36,8 +36,6 @@
     "prop-types": "*"
   },
   "devDependencies": {
-    "@nti/cmp-scripts": "^2.0.0",
-    "prop-types": "^15.5.0",
-    "react": "^16.2.0"
+    "@nti/cmp-scripts": "^2.0.0"
   }
 }
