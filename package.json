@@ -31,11 +31,7 @@
   "dependencies": {
     "@nti/lib-commons": "NextThought/nti.lib.commons"
   },
-  "peerDependencies": {
-    "react": "*",
-    "prop-types": "*"
-  },
   "devDependencies": {
-    "@nti/cmp-scripts": "^2.0.0"
+    "@nti/cmp-scripts": "^2.31.8"
   }
 }
