@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {HOC} from '@nti/lib-commons';
+import { HOC } from '@nti/lib-commons';
 
 const BOUND_MAP = new WeakMap();
 
-function getBoundFunction (fn, scope) {
+function getBoundFunction(fn, scope) {
 	if (!BOUND_MAP.has(scope)) {
 		BOUND_MAP.set(scope, new WeakMap());
 	}
@@ -19,7 +19,6 @@ function getBoundFunction (fn, scope) {
 }
 
 export default class StoreConnector extends React.Component {
-
 	/**
 	 * Used to compose a Component Class. This returns a new Component Type.
 	 *
@@ -35,8 +34,8 @@ export default class StoreConnector extends React.Component {
 	 * @param  {Function} onUnmount A callback before the component unmounts.
 	 * @returns {Function} A Composed Component
 	 */
-	static connect (store, component, propMap, onMount, onUnmount) {
-		const cmp = React.forwardRef((props, ref) => (
+	static connect(store, component, propMap, onMount, onUnmount) {
+		const cmp = React.forwardRef((props, ref) =>
 			React.createElement(StoreConnector, {
 				...props,
 				_forwardedRef: ref,
@@ -46,11 +45,10 @@ export default class StoreConnector extends React.Component {
 				_onMount: onMount,
 				_onUnmount: onUnmount,
 			})
-		));
+		);
 
 		return HOC.hoistStatics(cmp, component, 'StoreConnector');
 	}
-
 
 	static propTypes = {
 		/*
@@ -68,7 +66,7 @@ export default class StoreConnector extends React.Component {
 		_store: PropTypes.shape({
 			get: PropTypes.func.isRequired,
 			addChangeListener: PropTypes.func.isRequired,
-			removeChangeListener: PropTypes.func.isRequired
+			removeChangeListener: PropTypes.func.isRequired,
 		}).isRequired,
 
 		/*
@@ -99,36 +97,32 @@ export default class StoreConnector extends React.Component {
 		 */
 		children: PropTypes.element,
 
-		_forwardedRef: PropTypes.any
-	}
+		_forwardedRef: PropTypes.any,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
-		const {_store: store} = props;
+		const { _store: store } = props;
 		this.subscribe(store);
 	}
 
-
-	componentDidMount () {
-		const {_onMount: callback} = this.props;
+	componentDidMount() {
+		const { _onMount: callback } = this.props;
 		if (callback) {
 			callback();
 		}
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {_store: A} = prevProps;
-		const {_store: B} = this.props;
+	componentDidUpdate(prevProps) {
+		const { _store: A } = prevProps;
+		const { _store: B } = this.props;
 		if (A !== B) {
 			this.subscribe(B);
 		}
 	}
 
-
-	componentWillUnmount () {
-		const {_onUnmount: callback} = this.props;
+	componentWillUnmount() {
+		const { _onUnmount: callback } = this.props;
 		this.unmounted = true;
 
 		if (this.unsubscribe) {
@@ -140,20 +134,21 @@ export default class StoreConnector extends React.Component {
 		}
 	}
 
-
-	subscribe (store) {
+	subscribe(store) {
 		if (this.unsubscribe) {
 			this.unsubscribe();
 		}
 
 		store.addChangeListener(this.onStoreChange);
 
-		this.unsubscribe = () => (store.removeChangeListener(this.onStoreChange), delete this.unsubscribe);
+		this.unsubscribe = () => (
+			store.removeChangeListener(this.onStoreChange),
+			delete this.unsubscribe
+		);
 	}
 
-
-	onStoreChange = ({type} = {}) => {
-		const {_propMap} = this.props;
+	onStoreChange = ({ type } = {}) => {
+		const { _propMap } = this.props;
 
 		if (this.unmounted) {
 			if (this.unsubscribe) {
@@ -162,30 +157,37 @@ export default class StoreConnector extends React.Component {
 			return;
 		}
 
-
 		if (!type && _propMap) {
-			throw new Error ('No type on change.');
+			throw new Error('No type on change.');
 		}
 
 		if (type && !Array.isArray(type)) {
 			type = [type];
 		}
 
-		const shouldUpdate = !_propMap || type.some(prop => Object.prototype.hasOwnProperty.call(_propMap, prop));
+		const shouldUpdate =
+			!_propMap ||
+			type.some(prop =>
+				Object.prototype.hasOwnProperty.call(_propMap, prop)
+			);
 
 		if (shouldUpdate) {
 			this.forceUpdate();
 		}
-	}
+	};
 
-
-	getPropsFromMap () {
-		const {_component, _forwardedRef: ref, _store, _propMap = {}, ...others} = this.props;
+	getPropsFromMap() {
+		const {
+			_component,
+			_forwardedRef: ref,
+			_store,
+			_propMap = {},
+			...others
+		} = this.props;
 		const keys = Object.keys(_propMap);
 
-		const props = {...others, ref};
-		for(let privateKey of Object.keys(StoreConnector.propTypes)) {
-
+		const props = { ...others, ref };
+		for (let privateKey of Object.keys(StoreConnector.propTypes)) {
 			//Don't consider 'children' a private prop if we are in "_component" mode.
 			if (privateKey === 'children' && _component) {
 				continue;
@@ -200,8 +202,7 @@ export default class StoreConnector extends React.Component {
 
 				if (typeof storeValue === 'function') {
 					props[_propMap[key]] = getBoundFunction(storeValue, _store);
-				}
-				else {
+				} else {
 					props[_propMap[key]] = storeValue;
 				}
 			} else if (typeof key === 'string' && _propMap[key] != null) {
@@ -212,9 +213,8 @@ export default class StoreConnector extends React.Component {
 		return props;
 	}
 
-
-	render () {
-		const {_component, children} = this.props;
+	render() {
+		const { _component, children } = this.props;
 		const props = this.getPropsFromMap();
 
 		return _component
